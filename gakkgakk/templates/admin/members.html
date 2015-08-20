@@ -1,0 +1,73 @@
+
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="body-content">
+    <form id="searchForm" method="POST" action="" role="form">
+    <div class="container">
+        <div class="col-sm-6 col-sm-offset-3">
+            <div id="imaginary_container">
+                <div class="input-group stylish-input-group">
+                    {{ form.hidden_tag() }}
+                    {{ form.search(placeholder="Søk etter en bruker ved hjelp av før-/etternavn eller telefon nummer", class_="form-control") }}
+                    <span class="input-group-addon">
+                        <button type="submit">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+    {{ pagination.links }}
+    {% set page = request.args.page|default(1) %}
+    <table class="table table-condensed table-striped">
+        <thead>
+            <tr class="text-center">
+                <td><b>Fornavn</b> <a href="?page={{ page }}&sort_on=first_name"><i class="fa fa-sort-asc"></i></a> <a href="?page={{ page }}&sort_on=first_name&reverse=1"><i class="fa fa-sort-desc"></i></a></td>
+                <td><b>Etternavn</b> <a href="?page={{ page }}&sort_on=first_name"><i class="fa fa-sort-asc"></i></a> <a href="?page={{ page }}&sort_on=last_name&reverse=1"><i class="fa fa-sort-desc"></i></a></td>
+                <td><b>E-mail</b> <a href="?page={{ page }}&sort_on=email"><i class="fa fa-sort-asc"></i></a> <a href="?page={{ page }}&sort_on=email&reverse=1"><i class="fa fa-sort-desc"></i></a></td>
+                <td><b>Registrert</b> <a href="?page={{ page }}&sort_on=created_at"><i class="fa fa-sort-asc"></i></a> <a href="?page={{ page }}&sort_on=created_at&reverse=1"><i class="fa fa-sort-desc"></i></a></td>
+                <td><b>Studierettning</b> <a href="?page={{ page }}&sort_on=study"><i class="fa fa-sort-asc"></i></a> <a href="?page={{ page }}&sort_on=study&reverse=1"><i class="fa fa-sort-desc"></i></a></td>
+                <td><b>Telefon</b></td>
+                <td><b>Aktiv</b></td>
+                <td><b>Admin</b></td>
+            </tr>
+        </thead>
+        <tbody>
+            {% set sort_on = request.args.sort_on|default('id') %}
+            {% set rev = request.args.get('reverse')|default(False)|int %}
+            {% for user in users|sort(attribute=sort_on, reverse=rev) %}
+            <tr class="text-center">
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.last_name }}</td>
+                <td>
+                    <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+                </td>
+                <td>{{ user.created_at }}</td>
+                <td>{{ user.study }}</td>
+                <td>{{ user.phone }}</td>
+                <td>
+                    <a href="{{ url_for('admin.user', type='state', uid=user.id) }}">
+                        <i>
+                            <span class="glyphicon glyphicon-{% if user.active %}ok{% else %}remove{% endif %}"></span>
+                        </i>
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ url_for('admin.user', type='admin', uid=user.id) }}">
+                        <i>
+                            <span class="glyphicon glyphicon-{% if user.is_admin %}ok{% else %}remove{% endif %}"></span>
+                        </i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {{ pagination.links }}
+    {{ pagination.info }}
+</div>
+{% endblock %}
+

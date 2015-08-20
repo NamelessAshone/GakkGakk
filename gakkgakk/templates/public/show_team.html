@@ -1,0 +1,55 @@
+
+{% extends "layout.html" %}
+
+{% block content %}
+{% set type = 'add' %}
+<div class="body-content">
+    <h1 class="text-center">{{ team.name }} ({{ team.members|length }}/8)</h1>
+    <table class="table table-condensed table-striped">
+        <thead>
+            <tr class="text-center">
+                <td><b>Fornavn</b> <a href="?sort_on=first_name"><i class="fa fa-sort-asc"></i></a> <a href="?sort_on=first_name&reverse=1"><i class="fa fa-sort-desc"></i></a></td>
+                <td><b>Etternavn</b> <a href="?sort_on=first_name"><i class="fa fa-sort-asc"></i></a> <a href="?sort_on=last_name&reverse=1"><i class="fa fa-sort-desc"></i></a></td>
+                <td><b>Rolle</b></td>
+                <td><b>Studierettning</b> <a href="?sort_on=study"><i class="fa fa-sort-asc"></i></a> <a href="?sort_on=study&reverse=1"><i class="fa fa-sort-desc"></i></a></td>
+                {% if current_user.is_admin %}
+                <td><b>E-mail</b></td>
+                <td><b>Telefon</b></td>
+                <td></td>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% set sort_on = request.args.sort_on|default('id') %}
+            {% set rev = request.args.get('reverse')|default(False)|int %}
+            {% for user in team.members|sort(attribute=sort_on, reverse=rev) %}
+            <tr class="text-center">
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.last_name }}</td>
+                <td>{% if team.contact_id == user.id %}Kaptein{% else %}Spiller{% endif %}</td>
+                <td>{{ user.study }}</td>
+                {% if current_user.is_admin %}
+                <td>
+                    <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+                </td>
+                <td><b>{{ user.phone }}</b></td>
+                <td>
+                    <a href="{{ url_for('public.team_leave', team_id=team.id, user_id=user.id) }}"><span class="fa fa-ban"></span></a>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if not is_member %}
+    <a href="{{  url_for('public.team_join', team_id=team.id) }}" class="btn btn-success"><span class="fa fa-user-plus"></span> Bli med</a>
+    {% endif %}
+    {% if is_member and not current_user.id == team.contact_id %}
+    <a href="{{  url_for('public.team_leave', team_id=team.id) }}" class="btn btn-warning"><span class="fa fa-user-times"></span> Forlat</a>
+    {% endif %}
+    {% if current_user.id == team.contact_id or current_user.is_admin %}
+    <a href="{{  url_for('public.team_delete', team_id=team.id) }}" class="btn btn-danger"><span class="fa fa-trash-o"></span> Fjern</a>
+    {% endif %}
+</div>
+{% endblock %}
+

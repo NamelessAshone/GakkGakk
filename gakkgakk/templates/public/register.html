@@ -1,0 +1,42 @@
+
+{% extends "layout.html" %}
+{% block content %}
+<div class="container-narrow">
+  <h1>Register</h1>
+    <br/>
+    <form id="registerForm" class="form form-register" method="POST" action="" role="form">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{form.email.label}}
+                {{form.email(placeholder="Email", class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.first_name.label}}
+                {{form.first_name(placeholder="Fornavn", class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.last_name.label}}
+                {{form.last_name(placeholder="Etternavn", class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.study.label}}
+                {{form.study(placeholder="Studieretning", class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.phone.label}}
+                {{form.phone(placeholder="Mobil nummer", class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.password.label}}
+                {{form.password(placeholder="Passord", class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.confirm.label}}
+                {{form.confirm(placeholder="Passord (igjen)", class_="form-control")}}
+            </div>
+            <p><input class="btn btn-default btn-submit" type="submit" value="Registrer"></p>
+    </form>
+    <p><em>Allerede registrert?</em> Klikk <a href="/">her</a> for og logg inn.</p>
+</div>
+{% endblock %}
+

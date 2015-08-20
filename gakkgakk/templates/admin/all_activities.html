@@ -1,0 +1,72 @@
+
+{% extends "layout.html" %}
+
+{% block content %}
+{% set type = 'add' %}
+<div class="body-content">
+    {% for activity in activities %}
+    <h3>{{ activity.name }} ({% if day_id == 1 %}{{ activity.participants|length }}{% else %}{{ activity.teams|length }}{% endif %}/{{ activity.slots }}) - {{ activity.time|string|truncate(5, end='') }}</h3>
+    {% if day_id == 2 and activity.teams|length > 0 %}
+    {% for team in activity.teams %}
+    <h4>{{ team.name }} - ({{ team.members|length }}/8)</h4>
+    {% if team.members|length > 0 %}
+    <table class="table table-condensed table-striped">
+        <thead>
+            <tr class="text-center">
+                <td><b>Fornavn</b></td>
+                <td><b>Etternavn</b></td>
+                <td><b>Rolle</b></td>
+                <td><b>E-mail</b></td>
+                <td><b>Studierettning</b></td>
+                <td><b>Telefon</b></td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in team.members %}
+            <tr class="text-center">
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.last_name }}</td>
+                <td>{% if team.contact_id == user.id %}Kaptein{% else %}Spiller{% endif %}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.study }}</td>
+                <td>{{ user.phone }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <i>Denne aktiviteten har ingen deltakere.</i>
+    {% endif %}
+    {% endfor %}
+    {% else %}
+    {% if activity.participants|length > 0 %}
+    <table class="table table-condensed table-striped">
+        <thead>
+            <tr class="text-center">
+                <td><b>Fornavn</b></td>
+                <td><b>Etternavn</b></td>
+                <td><b>E-mail</b></td>
+                <td><b>Studierettning</b></td>
+                <td><b>Telefon</b></td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in activity.participants %}
+            <tr class="text-center">
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.last_name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.study }}</td>
+                <td>{{ user.phone }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <i>Denne aktiviteten har ingen deltakere.</i>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}
+

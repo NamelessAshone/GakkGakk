@@ -1,0 +1,60 @@
+
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="{{ url_for('public.home') }}">
+
+      Quak! 2015
+
+    </a>
+  </div>
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav">
+      <li {% if request.url_rule.endpoint == "public.dmdri" %}class="active"{% endif %}><a href="{{ url_for('public.dmdri') }}">Dagen Med Det Rare I</a></li>
+      <li {% if request.url_rule.endpoint == "public.aktivitetsdagen" %}class="active"{% endif %}><a href="{{ url_for('public.aktivitetsdagen') }}">Festningslekene</a></li>
+    </ul>
+    {% if current_user and current_user.is_authenticated() %}
+    <ul class="nav navbar-nav navbar-right">
+        {% if current_user.is_admin %}
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ url_for('admin.members') }}">Medlemmer</a></li>
+                    <li><a href="{{ url_for('admin.show_activity', day_id=1) }}">Vis alle DMDRI</a></li>
+                    <li><a href="{{ url_for('admin.show_activity', day_id=2) }}">Vis alle Festningslekene</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="{{ url_for('admin.add_activity') }}">Legg til aktivitet</a></li>
+                </ul>
+        </li>
+        {% endif %}
+        <li>
+            <p class="navbar-text"><a class="navbar-link" href="{{ url_for('user.members') }}">Innlogget som {{ current_user.full_name }}</a></p>
+        </li>
+        <li><a class="navbar-link" href="{{ url_for('public.logout') }}"><i class="fa fa-sign-out"></i></a></li>
+    </ul>
+    {% elif form %}
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="{{ url_for('public.register') }}">Registrer</a></li>
+    </ul>
+    <form id="loginForm" method="POST" class="navbar-form form-inline navbar-right" action="/" role="login">
+      {{ form.hidden_tag() }}
+      <div class="form-group">
+        {{ form.email(placeholder="E-mail", class_="form-control") }}
+        {{ form.password(placeholder="Passord", class_="form-control") }}
+      </div>
+      <button type="submit" class="btn btn-default">Logg inn</button>
+    </form>
+    {% endif %}
+  </div><!-- /.navbar-collapse -->
+  </div><!-- /.container -->
+</nav>
+

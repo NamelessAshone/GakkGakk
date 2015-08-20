@@ -1,0 +1,12 @@
+
+{% extends "layout.html" %}
+{% block content %}
+<div class="jumbotron">
+
+  <h2>Velkommen til Quak! sin påmeldingsside</h2>
+  <p>Her kan du registrere ditt lag på <a href="{{ url_for('public.aktivitetsdagen') }}">Festningslekene</a> eller melde deg på en av aktivitetene til <a href="{{ url_for('public.dmdri') }}">Dagen Med Det Rare I</a>.</p>
+  <p>Ved påmeldinger av aktivitet til DMDRI og festningslekene får du tilsendt bekreftelse med den mailen du registrerte deg med. Du vil også få varslinger på mail om eventuelle endringer skulle forekomme. (f.eks aktivitet utgår eller lignende).</p>
+  <br />
+  <p>Vi håper du får en fantastisk opplevelse under fadderuka og gleder oss til å se deg!</p>
+</div>
+{% endblock %}

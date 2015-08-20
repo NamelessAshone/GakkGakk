@@ -1,0 +1,45 @@
+
+{% extends "layout.html" %}
+{% block content %}
+<div class="container-narrow">
+  <h1>Rediger aktivitet</h1>
+    <br/>
+    <form id="editForm" class="form form-register" method="POST" action="" role="form">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{form.name.label}}
+                {{form.name(placeholder="Grilling vid piren", class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.day.label}}
+                {{form.day(class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.description.label}}
+                {{form.description(placeholder="En beskrivelse av aktiviteten.", class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.location.label}}
+                {{form.location(placeholder="Ec Dahls gt. 1, 7004 Trondheim", class_="form-control")}} Kan være en adress eller "plass" (f.eks Munkholmen)
+            </div>
+            <div class="form-group">
+                {{form.slots.label}}
+                {{form.slots(placeholder="40", class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.time.label}}
+                {{form.time()}}
+            </div>
+            <div class="form-group">
+                {{form.reg_start.label}}
+                {{form.reg_start(min="2015-08-08T00:00:00.00", max="2015-08-24T00:00:00.00")}}
+            </div>
+            <div class="form-group">
+                {{form.reg_stop.label}}
+                {{form.reg_stop(min="2015-08-08T00:00:00.00", max="2015-08-24T00:00:00.00")}}
+            </div>
+            <p><input class="btn btn-default btn-submit" type="submit" value="Oppdater aktivitet"></p>
+    </form>
+</div>
+{% endblock %}
+
